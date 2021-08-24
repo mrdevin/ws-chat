@@ -1,0 +1,45 @@
+body, html {
+  height: 100%;
+  width: 100%;
+  background-color: darkgoldenrod;
+  padding: 0;
+  margin: 0;
+}
+
+body{
+  display: grid;
+  grid-template-rows: 80px auto 80px;
+}
+
+header,
+main,
+footer {
+  display:flex;
+  flex-wrap: wrap;
+  align-content: center;
+}
+
+header {
+  grid-area: 1 / 1 ;
+  background-color: darkseagreen;
+  align-content: center;
+
+  img {
+    display: flex;
+    width: 40px;
+    height: 40px;;
+  }
+}
+
+main {
+  grid-area: 2 / 1 ;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+}
+
+footer {
+  grid-area: 3 / 1 ;
+  background-color: darkseagreen;
+}
+

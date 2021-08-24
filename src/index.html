@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+    <meta name="description" content="wc chat interface" />
+    <meta name="author" content="Devin Hartman" />
+
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <script>var exports = {};</script>
+
+    <!-- Load polyfills -->
+    <script src="vendor/custom-elements-es5-adapter.js"> </script>
+    <script  src="vendor/webcomponents-loader.js"> </script>
+    <script src="vendor/polyfill-support.js"> </script>
+
+    <%= htmlWebpackPlugin.tags.headTags %>
+
+  </head>
+
+  <body>
+    <header>ws-chat <img src="/img/logo.png"/></header>
+    <!-- Page Content -->
+    <main id="mainContent" role="main" class="main">
+      <ws-chat></ws-chat>
+    </main>
+    <footer>copywright 2021</footer>
+
+    <%= htmlWebpackPlugin.tags.bodyTags %>
+  </body>
+</html>
