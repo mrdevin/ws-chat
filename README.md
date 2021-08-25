@@ -1,2 +1,12 @@
 # ws-chat
-web-scoket nodejs server and ws-chat element to consume a web socket backend
+
+## install
+
+```npm install```
+
+## run Websocket Server
+
+```node chat-server.js```
+
+## lauch front-end
+``` npm run start ```
