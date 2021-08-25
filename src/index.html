@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 
     <meta name="description" content="wc chat interface" />
@@ -22,13 +22,14 @@
   </head>
 
   <body>
-    <header>ws-chat <img src="/img/logo.png"/></header>
-    <!-- Page Content -->
-    <main id="mainContent" role="main" class="main">
-      <ws-chat></ws-chat>
-    </main>
-    <footer>copywright 2021</footer>
-
+    <section id=app>
+      <header>ws-chat <img src="/img/logo.png"/></header>
+      <!-- Page Content -->
+      <main id="mainContent" role="main" class="main">
+        <ws-chat></ws-chat>
+      </main>
+      <footer>copywright 2021</footer>
+    </section>
     <%= htmlWebpackPlugin.tags.bodyTags %>
   </body>
 </html>

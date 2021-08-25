@@ -1,14 +1,19 @@
 body, html {
   height: 100%;
-  width: 100%;
-  background-color: darkgoldenrod;
   padding: 0;
   margin: 0;
 }
 
-body{
+#app{
   display: grid;
   grid-template-rows: 80px auto 80px;
+  width: clamp(0em, 100%, 95vw);
+  background-color: darkgoldenrod;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  height: 100%;
 }
 
 header,
@@ -17,6 +22,9 @@ footer {
   display:flex;
   flex-wrap: wrap;
   align-content: center;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 header {
@@ -33,8 +41,11 @@ header {
 
 main {
   grid-area: 2 / 1 ;
-  align-items: center;
+  align-content: center;
   width: 100%;
+  // max-height: calc(100% - 160px);
+  // overflow: hidden;
+  // max-height: calc(100% - 160px);
   justify-content: center;
 }
 
