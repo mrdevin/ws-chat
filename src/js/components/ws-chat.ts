@@ -5,22 +5,21 @@ import { customElement, property } from 'lit/decorators.js';
 export class WsChat extends LitElement {
     static styles = css`
         :host {
-            display: flex;
+            display: block;
             flex-wrap: nowrap;
             flex-direction: column;
             border-radius: 10px;
             overflow: hidden;
             --max-height: 200px;
-            /* height:  var(--max-height); */
-            max-height:  var(--max-height);
+            height:  var(--max-height);
             width: clamp(30ch, 100px, 400px);
-            /* transform: translateY(-100%); */
             transition: all 800ms cubic-bezier(0.175, 0.885, 0.52, 1.275);
 
             header,
             [part~=chatStart] {
                 height: 0;
                 min-height: 0;
+                overflow-x: scroll;
                 /* overflow: hidden; */
                 /* display: none; */
                 transition: all 800ms cubic-bezier(0.175, 0.885, 0.52, 1.275);
@@ -30,7 +29,7 @@ export class WsChat extends LitElement {
         }
 
         :host([username]){
-            max-height: 500px;
+            height: 500px;
             width: clamp(30ch, 400px, 400px);
             transform: translateY(0);
             header,
@@ -59,14 +58,14 @@ export class WsChat extends LitElement {
         }
 
         header{
-            top: 0;
+            /* top: 0; */
             align-items: center;
             justify-content: center;
             padding: 5px;
         }
 
         footer{
-            bottom: 0;
+            /* bottom: 0; */
         }
 
         [part~="close"] {
@@ -76,19 +75,21 @@ export class WsChat extends LitElement {
 
         [part~=chat],
         [part~=chatStart] {
+            display: flex;
             flex-wrap: nowrap;
             flex-direction: column;
             background-color: white;
             flex: 1;
             justify-content: flex-end;
             padding: 0px 5px;
-            max-height: 100%;
+            /* height: calc(100% - 80px); */
         }
 
-        [part~=chat] {
-            /* height: calc(100% - 80px); */
-            /* overflow: hidden; */
-            /* overflow-x: scroll; */
+        [part~=chatwrap] {
+            display: block;
+            height: calc(100% - 100px);
+            overflow: auto;
+            overflow-y: scroll;
         }
 
         [part~=chatStart] {
@@ -152,17 +153,43 @@ export class WsChat extends LitElement {
             time: 1629834295135,
             text: "I think this is easy to make...",
             author: "Devin Hartman"
+        },{
+            time: 930849180000,
+            text: "hey - i really like this library https://some-other-thing",
+            author: "Michael Lindsay"
+        },{
+            time: 930849180000,
+            text: "i think we should use",
+            author: "Michael Lindsay"
+        },{
+            time: 1629834295135,
+            text: "I think this is easy to make...",
+            author: "Devin Hartman"
+        },{
+            time: 930849180000,
+            text: "hey - i really like this library https://some-other-thing",
+            author: "Michael Lindsay"
+        },{
+            time: 930849180000,
+            text: "i think we should use",
+            author: "Michael Lindsay"
+        },{
+            time: 1629834295135,
+            text: "I think this is easy to make...",
+            author: "Devin Hartman"
         }
     ];
 
     renderMsgArea(){
         return this.userName
         ? html`
-            <ul part="chat">
+        <div part="chatwrap">
+            <div part="chat">
                 ${this.messages.map((msg) => html`
-                    <li part="msg ${this.isOther(msg)}" >${msg.author}: ${msg.text} <time>${new Date(msg.time).toLocaleTimeString()}</time></li>
+                    <div part="msg ${this.isOther(msg)}" >${msg.author}: ${msg.text} <time>${new Date(msg.time).toLocaleTimeString()}</time></div>
                 `)}
-            </ul>
+            </div>
+        </div>
         `
         : html`<div part="chatStart">Please add username below</div>`;
     }
@@ -171,15 +198,12 @@ export class WsChat extends LitElement {
 
         return html`
             <header>Chat Title
-                <button part="close">X</button>
+                <button @click="${this.stop}" part="close">X</button>
             </header>
 
-            <ul part="chat">
-                ${this.renderMsgArea()}
-
-            </ul>
+            ${this.renderMsgArea()}
             <footer>
-                <input @keydown="${this.handleInputKey}"  id="msg" type="text" part="input" placeholder="${this.placeholder}"/>
+                <input @keydown="${this.handleInputKey}" id="msg" type="text" part="input" placeholder="${this.placeholder}"/>
                 <button @click="${this.sendUpdate}" part="close">&#x23E9;</button>
             </footer>
         `;
@@ -214,6 +238,10 @@ export class WsChat extends LitElement {
         }
     }
 
+    stop(){
+        this.userName = undefined;
+    }
+
     connectedCallback() {
         super.connectedCallback();
         // requestAnimationFrame(()=>{
@@ -243,8 +271,14 @@ export class WsChat extends LitElement {
             // console.log("🚀 ~ file: ws-chat.ts ~ line 149 ~ WsChat ~ onMsg ~ json", json)
             if(json.type === 'message'){
                 this.messages.push(json.data)
-                this.messages = this.messages.slice()
+                this.messages = this.messages.slice();
+
             }
+            requestAnimationFrame(()=>{
+                let objDiv = this.shadowRoot.querySelector('[part="chatwrap"]');
+                objDiv.scrollTop = objDiv.scrollHeight;
+            })
+
         } catch (e) {
             console.log('This doesn\'t look like a valid JSON: ',
                 message.data);
@@ -271,7 +305,10 @@ export class WsChat extends LitElement {
             this.userName = target.value;
         }
 
-        this.wsConnection.send(message);
+        if(target.value.length > 0){
+            this.wsConnection.send(message);
+        }
+
         target.value = '';
 
         if(!this.isSafari){
